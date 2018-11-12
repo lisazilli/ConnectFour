@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -30,7 +31,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onClick(View v) {
         if ( v.getId() == R.id.startGame ) {
-            GameService.getInstance().setColor(GameService.YELLOW);
+            if ( GameService.getInstance().getColor() != GameService.NONE) {
+                Toast.makeText(this,
+                        "Game is in session. Reset to start a new game.",
+                        Toast.LENGTH_LONG).show();
+                return;
+            } else {
+                GameService.getInstance().setColor(GameService.YELLOW);
+            }
         }
         if ( v.getId() == R.id.reset ) {
             GameService.getInstance().setColor(GameService.NONE);
@@ -51,22 +59,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         int cellSize = (int) Math.floor((columnSize<rowSize?columnSize:rowSize));
 
-        for(int x=0;x<=numTiles-1;x++)
-        {
-            CellView cell = new CellView(MainActivity.this);
-            cell.setPadding(0, 0, 0, 0);
-            GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
-            layoutParams.width = cellSize;
-            layoutParams.height = cellSize;
-            layoutParams.leftMargin=0;
-            layoutParams.rightMargin=0;
-            layoutParams.topMargin=5;
-            layoutParams.bottomMargin=5;
-            cell.setLayoutParams(layoutParams);
+        GameService.getInstance().createCells(rows,columns);
 
-            MainActivity.this.gameboard.addView(cell);
-            MainActivity.this.gameboard.getLayoutParams().width=cellSize * columns;
-            MainActivity.this.gameboard.getLayoutParams().height=cellSize * rows;
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < columns; j++) {
+                CellView cell = new CellView(MainActivity.this);
+                cell.setPadding(0, 0, 0, 0);
+                GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
+                layoutParams.width = cellSize;
+                layoutParams.height = cellSize;
+                layoutParams.leftMargin = 0;
+                layoutParams.rightMargin = 0;
+                layoutParams.topMargin = 5;
+                layoutParams.bottomMargin = 5;
+                cell.setLayoutParams(layoutParams);
+                cell.setPosition(i,j);
+                GameService.getInstance().setCell(cell);
+                MainActivity.this.gameboard.addView(cell);
+                MainActivity.this.gameboard.getLayoutParams().width = cellSize * columns;
+                MainActivity.this.gameboard.getLayoutParams().height = cellSize * rows;
+            }
         }
     }
 

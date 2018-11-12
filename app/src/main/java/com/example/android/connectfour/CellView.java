@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -15,6 +14,12 @@ import android.widget.Toast;
 public class CellView extends View {
 
     int color;
+    int row = 0;
+    int column = 0;
+
+    private RectF rect;
+    private Paint paint;
+
     public CellView(Context context) {
         super(context);
         color = new Integer(GameService.getInstance().getColor());
@@ -30,15 +35,35 @@ public class CellView extends View {
         color = new Integer(GameService.getInstance().getColor());
     }
 
-    private RectF rect;
+    public void setPosition(int row, int column) {
+        this.row = row;
+        this.column = column;
+    }
+
+    public int getRow(){
+        return this.row;
+    }
+
+    public int getColumn() {
+        return this.column;
+    }
 
     public boolean onTouchEvent( MotionEvent event ) {
         if ( event.getAction() != MotionEvent.ACTION_UP )
             return true;
 
-        if ( color > 0) {
+        if (!GameService.getInstance().getGameInplay()){
             Toast.makeText(this.getContext(),
-                    "Cell already taken. Pick another cell.",
+                    "Game is over, please restart the game",
+                    Toast.LENGTH_LONG).show();
+            return true;
+        }
+        /*Toast.makeText(this.getContext(),
+                String.format("Test Square[%d,%d]",row,column),
+                Toast.LENGTH_LONG).show();*/
+        if ( color > 0 || !GameService.getInstance().isAvailable(row,column)) {
+            Toast.makeText(this.getContext(),
+                    "Square not available, please select an available square.",
                     Toast.LENGTH_LONG).show();
             return true;
         }
@@ -56,12 +81,22 @@ public class CellView extends View {
                     Toast.LENGTH_LONG).show();
             return true;
         }
+
+        if (GameService.getInstance().isWon()) {
+            Toast.makeText(this.getContext(),
+                    String.format("Player %d wins!", color),
+                    Toast.LENGTH_LONG).show();
+        } else if (GameService.getInstance().isFull()) {
+            Toast.makeText(this.getContext(),
+                    String.format("Board is full. No winners."),
+                    Toast.LENGTH_LONG).show();
+        }
         invalidate();
         return true;
     }
 
     protected void onDraw(Canvas canvas) {
-        Paint paint = new Paint();
+        paint = new Paint();
         paint.setAntiAlias(true);
         paint.setColor(Color.BLACK);
         canvas.drawRect(0,0,canvas.getWidth(),canvas.getHeight(), paint);
