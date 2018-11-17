@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.Toast;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private GridLayout gameboard;
@@ -24,6 +26,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button startGame = this.findViewById(R.id.startGame);
         startGame.setOnClickListener( this );
+
+        Button generateCode = this.findViewById(R.id.generateCode);
+        generateCode.setOnClickListener( this );
+
+        Button enterCode = this.findViewById(R.id.enterCode);
+        enterCode.setOnClickListener( this );
 
         this.gameboard = this.findViewById(R.id.boardview);
         this.gameboard.getViewTreeObserver().addOnGlobalLayoutListener(this.boardLayoutListener());
@@ -44,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             GameService.getInstance().setColor(GameService.NONE);
             MainActivity.this.gameboard.removeAllViews();
             createBoard();
+        }
+        if ( v.getId() == R.id.generateCode ) {
+            generateCode();
         }
     }
 
@@ -80,6 +91,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 MainActivity.this.gameboard.getLayoutParams().height = cellSize * rows;
             }
         }
+    }
+
+    //
+    // Source: https://gist.github.com/Fast0n/1c34728a1dc7adce57ad0f6d8133d46d
+    // Some modifications made
+    //
+    public void generateCode()
+    {
+        final String DATA = "123456789ABCDEFGHJKLMNOPQRSTUVWXYZ";
+        final int CODE_LENGTH = 4;
+        Random RANDOM = new Random();
+        StringBuilder sb = new StringBuilder(CODE_LENGTH);
+
+        for (int i = 0; i < CODE_LENGTH; i++) {
+            sb.append(DATA.charAt(RANDOM.nextInt(DATA.length())));
+        }
+        Toast.makeText(this,
+                "Code: " + sb.toString(),
+                Toast.LENGTH_LONG).show();
     }
 
     ViewTreeObserver.OnGlobalLayoutListener boardLayoutListener()
