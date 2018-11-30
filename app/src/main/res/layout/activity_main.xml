@@ -8,35 +8,41 @@
     tools:context=".MainActivity">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/reset"
-            style="@style/ButtonStyle"
-            android:text="Reset Board" />
-        <Button
-            android:id="@+id/startGame"
-            style="@style/ButtonStyle"
-            android:text="Start Game" />
-    </LinearLayout>
-    <GridLayout android:id="@+id/boardview"
-            android:rowCount="6"
-            android:columnCount="7"
-            android:background="#000000"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/generateCode"
-            style="@style/ButtonStyle"
-            android:text="Generate Code" />
-        <Button
-            android:id="@+id/enterCode"
-            style="@style/ButtonStyle"
-            android:text="Enter Code" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/statusView"
+            style="@style/ConnectionTextStyle"
+            android:text="@string/no_conn" />
+        <Switch
+            android:id="@+id/wifiSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wifi"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/findGame"
+                style="@style/ButtonStyle"
+                android:text="Find Players" />
+            <Button
+                android:id="@+id/disconnectPeer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:text="Disconnect" />
+            <Button
+                android:id="@+id/sendMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:text="Send" />
+        </LinearLayout>
+        <ListView
+            android:id="@+id/peerList"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
     </LinearLayout>
 </LinearLayout>

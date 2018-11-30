@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">ConnectFour</string>
+    <string name="no_conn">No Peer Connected</string>
+    <string name="wifi">Wi-Fi | </string>
+    <string name="wifi_enabled">Wifi Enabled</string>
+    <string name="wifi_disabled">Wifi Disabled</string>
+    <string name="init_discovery">Initiating Discovery</string>
+    <string name="discovery">Searching for peers...</string>
+    <string name="failed_discovery">Peer Discovery Failed</string>
+    <string name="no_devices">No devices found</string>
+    <string name="success_conn">Successfully connected to </string>
+    <string name="failed_conn">Peer connection failed</string>
+    <string name="host_conn">Connected: Host</string>
+    <string name="client_conn">Connected: Client</string>
+    <string name="disconnected">P2P Link Disconnected</string>
 </resources>
