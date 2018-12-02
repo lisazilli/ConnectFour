@@ -5,6 +5,9 @@ public class GameService {
     public static final int RED  = 1;
     public static final int YELLOW  = 2;
     public static final int NONE  = 0;
+    private static final String RED_NAME  = "Red";
+    private static final String YELLOW_NAME  = "Yellow";
+
     private int color = NONE;
     private int rows = 0;
     private int columns = 0;
@@ -13,7 +16,21 @@ public class GameService {
 
     public CellView[][] cells;
 
+    public static String getColorName(int color) {
+        if (RED == color ) {
+            return RED_NAME;
+        } else if (YELLOW == color ) {
+            return YELLOW_NAME;
+        }
+        return "";
+    }
+
     public static GameService getInstance() {
+        return _instance;
+    }
+
+    public static GameService getNewInstance() {
+        _instance = new GameService();
         return _instance;
     }
 
@@ -36,14 +53,18 @@ public class GameService {
         cells[cellView.getRow()][cellView.getColumn()] = cellView;
     }
 
-    public boolean isWon() {
+    public CellView getCell(int row, int column) {
+        return cells[row][column];
+    }
+
+    public boolean isWon(int colorCheck) {
         //Check to see if there are four consecutive numbers in a row
         for (int row = 0; row < rows; row++){
             for (int column = 0; column < columns - 3; column++){
-                if (cells[row][column].color == this.color &&
-                        cells[row][column + 1].color == this.color &&
-                        cells[row][column + 2].color == this.color &&
-                        cells[row][column + 3].color == this.color){
+                if (cells[row][column].color == colorCheck &&
+                        cells[row][column + 1].color == colorCheck &&
+                        cells[row][column + 2].color == colorCheck &&
+                        cells[row][column + 3].color == colorCheck){
 
                     //????Show winning cells
                     gameInplay = Boolean.FALSE;
@@ -57,10 +78,10 @@ public class GameService {
         //Check to see if there are four consecutive numbers in a column
         for (int column = 0; column < columns; column++){
             for (int row = 0; row <  rows - 3; row++){
-                if (cells[row][column].color == this.color &&
-                        cells[row + 1][column].color == this.color &&
-                        cells[row + 2][column].color == this.color &&
-                        cells[row + 3][column].color == this.color){
+                if (cells[row][column].color == colorCheck &&
+                        cells[row + 1][column].color == colorCheck &&
+                        cells[row + 2][column].color == colorCheck &&
+                        cells[row + 3][column].color == colorCheck){
 
                     //????Show winning cells
                     gameInplay = Boolean.FALSE;
@@ -71,10 +92,10 @@ public class GameService {
         //Check to see if there are four consecutive numbers on major diagonals
         for (int row = 0; row < rows - 3; row++){
             for (int column = 0; column < columns - 3; column++){
-                if (cells[row][column].color == this.color &&
-                        cells[row + 1][column + 1].color == this.color &&
-                        cells[row + 2][column + 2].color == this.color &&
-                        cells[row + 3][column + 3].color == this.color){
+                if (cells[row][column].color == colorCheck &&
+                        cells[row + 1][column + 1].color == colorCheck &&
+                        cells[row + 2][column + 2].color == colorCheck &&
+                        cells[row + 3][column + 3].color == colorCheck){
 
                     //????Show winning cells
                     gameInplay = Boolean.FALSE;
@@ -85,10 +106,10 @@ public class GameService {
         //Check to see if there are four consecutive numbers on sub diagonals
         for (int row = 0; row < rows - 3; row++){
             for (int column = 3; column < columns; column++){
-                if (cells[row][column].color == this.color &&
-                        cells[row + 1][column - 1].color == this.color &&
-                        cells[row + 2][column - 2].color == this.color &&
-                        cells[row + 3][column - 3].color == this.color){
+                if (cells[row][column].color == colorCheck &&
+                        cells[row + 1][column - 1].color == colorCheck &&
+                        cells[row + 2][column - 2].color == colorCheck &&
+                        cells[row + 3][column - 3].color == colorCheck){
 
                     //????Show winning cells
                     gameInplay = Boolean.FALSE;

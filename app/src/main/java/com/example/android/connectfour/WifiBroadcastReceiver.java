@@ -4,16 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.NetworkInfo;
-import android.net.wifi.p2p.WifiP2pDevice;
-import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class WifiBroadcastReceiver extends BroadcastReceiver {
     private MainActivity activity;
@@ -53,16 +48,22 @@ public class WifiBroadcastReceiver extends BroadcastReceiver {
                 p2pManager.requestConnectionInfo(p2pChannel, activity.connectionListener);
             } else {
                 activity.statusView.setText(R.string.no_conn);
-                if (activity.disconnectBtn.getVisibility() == View.VISIBLE) {
-                    activity.disconnectBtn.setVisibility(View.GONE);
+                activity.p2pClientAddress = null;
+                if (activity.gameAreaLayout.getVisibility() == View.VISIBLE) {
+                    activity.gameAreaLayout.setVisibility(View.GONE);
                 }
-                if (activity.peerView.getVisibility() != View.VISIBLE) {
-                    activity.peerView.setVisibility(View.VISIBLE);
+                if (activity.discoverLayout.getVisibility() != View.VISIBLE) {
+                    activity.discoverLayout.setVisibility(View.VISIBLE);
                 }
-                if (activity.find_btn.getVisibility() != View.VISIBLE) {
-                    activity.find_btn.setVisibility(View.VISIBLE);
+
+                if ( (activity.p2pHost != null && activity.p2pHost.socket != null && activity.p2pHost.socket.isConnected() ) ||
+                     (activity.p2pClient != null && activity.p2pClient.socket != null && activity.p2pClient.socket.isConnected())) {
+                    activity.clearGame();
                 }
-                Toast.makeText(activity.getApplicationContext(), R.string.disconnected, Toast.LENGTH_SHORT).show();
+
+                if ( activity.progressDialog != null && activity.progressDialog.isShowing())
+                    activity.progressDialog.dismiss();
+                Log.d("ConnectFour", String.format("%s",R.string.disconnected));
             }
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(intentAction)) {
             Log.d("ConnectFour", "P2P this device changed.");

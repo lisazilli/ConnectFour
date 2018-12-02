@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ConnectFour</string>
     <string name="no_conn">No Peer Connected</string>
-    <string name="wifi">Wi-Fi | </string>
+    <string name="wifi">Wi-Fi: </string>
     <string name="wifi_enabled">Wifi Enabled</string>
     <string name="wifi_disabled">Wifi Disabled</string>
     <string name="init_discovery">Initiating Discovery</string>
@@ -13,4 +13,6 @@
     <string name="host_conn">Connected: Host</string>
     <string name="client_conn">Connected: Client</string>
     <string name="disconnected">P2P Link Disconnected</string>
+    <string name="waiting_title">Waiting</string>
+    <string name="waiting_body">Waiting for player action</string>
 </resources>
