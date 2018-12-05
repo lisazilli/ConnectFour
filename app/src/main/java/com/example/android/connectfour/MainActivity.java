@@ -130,20 +130,25 @@ public class MainActivity extends AppCompatActivity /*implements PeerListListene
             @Override
             public void onClick(View v){
                 Log.d("ConnectFour", "Send button clicked!!");
+                TextView msgTextView = findViewById(R.id.message_field);
                 if ( p2pInfo.groupFormed && p2pInfo.isGroupOwner && p2pClientAddress == null ) {
                     Log.d("ConnectFour", "Host can't communicate with client yet until it receives the IP addr!!");
                 } else if (p2pInfo.groupFormed && p2pInfo.isGroupOwner) {
                     Log.d("ConnectFour", "Try to write the host message");
-                    String message = checkMessage();
-                    if (message != null)
+                    String message = checkMessage(msgTextView);
+                    if (message != null) {
                         new WriteThread (MainActivity.this, p2pClientAddress, P2P_ClIENT_PORT, TEXT_MSG, message).start();
+                        msgTextView.setText("");
+                    }
                 } else if (p2pInfo.groupFormed && p2pClientAddress == null ) {
                     new WriteThread (MainActivity.this, p2pInfo.groupOwnerAddress.getHostAddress(), P2P_HOST_PORT, HANDSHAKE_MSG, null).start();
                 } else if (p2pInfo.groupFormed ) {
                     Log.d("ConnectFour", "Try to write the client message");
-                    String message = checkMessage();
-                    if (message != null)
+                    String message = checkMessage(msgTextView);
+                    if (message != null) {
                         new WriteThread (MainActivity.this, p2pInfo.groupOwnerAddress.getHostAddress(), P2P_HOST_PORT, TEXT_MSG, message).start();
+                        msgTextView.setText("");
+                    }
                 }
             }
         });
@@ -225,8 +230,7 @@ public class MainActivity extends AppCompatActivity /*implements PeerListListene
         p2pReceiver = new WifiBroadcastReceiver(p2pManager, p2pChannel, this);
     }
 
-    public String checkMessage ( ) {
-        TextView msgTextView = findViewById(R.id.message_field);
+    public String checkMessage (TextView msgTextView ) {
         String message = msgTextView.getText().toString();
 
         if ( message == null || message.isEmpty()){
